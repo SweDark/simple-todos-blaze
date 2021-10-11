@@ -5,7 +5,7 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 import './App.html';
 import './Task.js';
 import './Login.js';
-import './TaskType.js'
+import './TaskType.js';
 
 
 const HIDE_COMPLETED_STRING = "hideCompleted";
@@ -30,10 +30,10 @@ const getTasksFilter = () => {
 Template.mainContainer.onCreated(function mainContainerOnCreated() {
     this.state = new ReactiveDict();
 
-    const handler = Meteor.subscribe('tasks');
+    const tasks = Meteor.subscribe('tasks');
     const tasktypes = Meteor.subscribe('tasktypes');
     Tracker.autorun(() => {
-      this.state.set(IS_LOADING_STRING, !handler.ready());
+      this.state.set(IS_LOADING_STRING, !tasks.ready());
       this.state.set(IS_LOADING_STRING, !tasktypes.ready());
 
     });
@@ -49,8 +49,20 @@ Template.mainContainer.events({
       }
   });
 
-Template.allTaskTypes.helpers({
-  tasktypes(){
+// Template.allTaskTypes.helpers({ //need this or just make it a function of mainContainer helpers?
+//   tasktypes(){
+//     if (!isUserLogged()) {
+//       return [];
+//     }
+    
+//     return TaskType.find({}, {
+//       sort: { createdAt: -1 },
+//     }).fetch();
+//   },
+// });
+
+Template.mainContainer.helpers({
+  allTaskTypes(){
     if (!isUserLogged()) {
       return [];
     }
@@ -59,9 +71,6 @@ Template.allTaskTypes.helpers({
       sort: { createdAt: -1 },
     }).fetch();
   },
-});
-
-Template.mainContainer.helpers({
     tasks() {
         const instance = Template.instance();
         const hideCompleted = instance.state.get(HIDE_COMPLETED_STRING);
@@ -105,13 +114,12 @@ Template.form.events({
   "submit .task-form"(event) {
     // Prevent default browser form submit
     event.preventDefault();
-
     // Get value from form element
     const target = event.target;
     const text = target.text.value;
-
+    const taskType = target.TaskType.value;
     // Insert a task into the collection
-    Meteor.call('tasks.insert', text);
+    Meteor.call('tasks.insert', text, taskType);
 
     // Clear form
     target.text.value = '';
@@ -120,6 +128,7 @@ Template.form.events({
 
 Template.tasktypeform.events({
   "submit .tasktype-form"(event){
+    
     // Prevent default browser form submit
     event.preventDefault();
 

@@ -2,7 +2,7 @@ import {check} from 'meteor/check';
 import {TasksCollection} from '../db/TasksCollection';
 
 Meteor.methods({
-    'tasks.insert'(text){
+    'tasks.insert'(text, TaskType){
         check(text, String);
 
         if(!this.userId){
@@ -12,6 +12,7 @@ Meteor.methods({
             text,
             createdAt: new Date,
             userId: this.userId,
+            TaskType,
         })
     },
     'tasks.remove'(taskId){

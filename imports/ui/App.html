@@ -16,7 +16,7 @@
             <div class="user">
                 {{getUser.username}} 🚪
             </div>
-                {{> form }}
+                {{> form taskType=allTaskTypes}}
 
                 <div class="filter">
                     <button id="hide-completed-button">
@@ -32,13 +32,31 @@
                     <div class="loading">loading...</div>
                 {{/if}}
 
+                <!-- <ul class="tasks">
+                    {{#each tasks}}
+                    {{> task task=this taskTypes=allTaskTypes}}
+                    {{/each}}
+                    </ul>
+                     -->
                 <ul class="tasks">
+                    
                     {{#each tasks}}
                         {{> task}}
                     {{/each}}
                 </ul>
-                {{> allTaskTypes}}
-                
+                {{> tasktypeform }}
+                <ul class="tasktypes">
+                    {{#each allTaskTypes}}
+                        {{> tasktype}}
+                    {{/each}}
+                </ul>
+                <select name="TaskType" >
+                    <option value="" disabled selected hidden>Select type...</option>
+                    {{#each allTaskTypes}}
+                         <option value="{{text}}">{{text}}</option>
+                    {{/each}}
+            
+                </select>
             {{else}}
                 {{> login }}
             {{/if}}
@@ -46,26 +64,16 @@
     </div>
 </template>
 
-<template name="allTaskTypes">
-    {{> tasktypeform }}
-    <ul class="tasktypes">
-        {{#each tasktypes}}
-            {{> tasktype}}
-        {{/each}}
-    </ul>
-</template>
-
 <template name="form">
     <form class="task-form">
         <input type="text" name="text" placeholder="Type to add new tasks" />
+        
         <select name="TaskType" >
             <option value="" disabled selected hidden>Select type...</option>
-            {{#each tasktypes}}
-                {{> tasktypeoption}}
-                <!-- <option value="{{value}}">{{label}}</option> -->
-                <option value="test">test</option>
+            {{#each taskType}}
+                 <option value="{{text}}">{{text}}</option>
             {{/each}}
-            <!-- {{#each taskType}} -->
+    
         </select>
         <button type="submit">Add Task</button>
     </form>
