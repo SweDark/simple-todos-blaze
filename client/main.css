@@ -103,6 +103,32 @@ header {
   background-color: #315481;
 }
 
+.tasktype-form {
+  display: flex;
+  margin: 16px;
+}
+
+.tasktype-form > input {
+  /* flex-grow: 1; */
+  box-sizing: border-box;
+  padding: 10px 6px;
+  background: transparent;
+  border: 1px solid #aaa;
+  /* width: 100%; */
+  font-size: 1em;
+  margin-right: 16px;
+}
+
+.tasktype-form > input:focus {
+  outline: 0;
+}
+
+.tasktype-form > button {
+  min-width: 100px;
+  height: 95%;
+  background-color: #315481;
+}
+
 .tasks {
   list-style-type: none;
   padding-inline-start: 0;

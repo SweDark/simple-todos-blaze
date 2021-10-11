@@ -1,9 +1,11 @@
 import { Template } from 'meteor/templating';
 import { TasksCollection } from "../db/TasksCollection";
+import { TaskType } from "../db/TaskType";
 import { ReactiveDict } from 'meteor/reactive-dict';
 import './App.html';
 import './Task.js';
 import './Login.js';
+import './TaskType.js'
 
 
 const HIDE_COMPLETED_STRING = "hideCompleted";
@@ -29,10 +31,12 @@ Template.mainContainer.onCreated(function mainContainerOnCreated() {
     this.state = new ReactiveDict();
 
     const handler = Meteor.subscribe('tasks');
+    const tasktypes = Meteor.subscribe('tasktypes');
     Tracker.autorun(() => {
       this.state.set(IS_LOADING_STRING, !handler.ready());
-    });
+      this.state.set(IS_LOADING_STRING, !tasktypes.ready());
 
+    });
 });
 
 Template.mainContainer.events({
@@ -44,6 +48,18 @@ Template.mainContainer.events({
         Meteor.logout();
       }
   });
+
+Template.allTaskTypes.helpers({
+  tasktypes(){
+    if (!isUserLogged()) {
+      return [];
+    }
+    
+    return TaskType.find({}, {
+      sort: { createdAt: -1 },
+    }).fetch();
+  },
+});
 
 Template.mainContainer.helpers({
     tasks() {
@@ -96,6 +112,23 @@ Template.form.events({
 
     // Insert a task into the collection
     Meteor.call('tasks.insert', text);
+
+    // Clear form
+    target.text.value = '';
+  }
+});
+
+Template.tasktypeform.events({
+  "submit .tasktype-form"(event){
+    // Prevent default browser form submit
+    event.preventDefault();
+
+    // Get value from form element
+    const target = event.target;
+    const text = target.text.value;
+    
+    // Insert a task into the collection
+    Meteor.call('tasktypes.insert', text);
 
     // Clear form
     target.text.value = '';

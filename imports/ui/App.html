@@ -11,7 +11,6 @@
                 </div>
             </div>
         </header>
-
         <div class="main">
             {{#if isUserLogged}}
             <div class="user">
@@ -38,6 +37,8 @@
                         {{> task}}
                     {{/each}}
                 </ul>
+                {{> allTaskTypes}}
+                
             {{else}}
                 {{> login }}
             {{/if}}
@@ -45,9 +46,35 @@
     </div>
 </template>
 
+<template name="allTaskTypes">
+    {{> tasktypeform }}
+    <ul class="tasktypes">
+        {{#each tasktypes}}
+            {{> tasktype}}
+        {{/each}}
+    </ul>
+</template>
+
 <template name="form">
     <form class="task-form">
         <input type="text" name="text" placeholder="Type to add new tasks" />
+        <select name="TaskType" >
+            <option value="" disabled selected hidden>Select type...</option>
+            {{#each tasktypes}}
+                {{> tasktypeoption}}
+                <!-- <option value="{{value}}">{{label}}</option> -->
+                <option value="test">test</option>
+            {{/each}}
+            <!-- {{#each taskType}} -->
+        </select>
         <button type="submit">Add Task</button>
+    </form>
+</template>
+
+<template name="tasktypeform">
+    <form class="tasktype-form">
+        <input type="text" name="text" placeholder="Type to add new tasktype" />
+
+        <button type="submit">Add Type</button>
     </form>
 </template>
