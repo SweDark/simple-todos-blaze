@@ -26,6 +26,12 @@
                                 Hide Completed
                         {{/if}}
                     </button>
+                    <select name="TaskType" id="show-type-selection" >
+                        <option value="show-all" selected>Show all types</option>
+                        {{#each allTaskTypes}}
+                             <option value="{{text}}">{{text}}</option>
+                        {{/each}}
+                    </select>
                 </div>
                 
                 {{#if isLoading}}
@@ -50,13 +56,6 @@
                         {{> tasktype}}
                     {{/each}}
                 </ul>
-                <select name="TaskType" >
-                    <option value="" disabled selected hidden>Select type...</option>
-                    {{#each allTaskTypes}}
-                         <option value="{{text}}">{{text}}</option>
-                    {{/each}}
-            
-                </select>
             {{else}}
                 {{> login }}
             {{/if}}

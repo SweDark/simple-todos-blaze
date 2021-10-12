@@ -218,3 +218,8 @@ header {
 
   font-weight: bold;
 }
+
+.task-text {
+  align-self: center;
+  padding-left: 30px;
+}
