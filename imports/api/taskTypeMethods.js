@@ -14,16 +14,4 @@ Meteor.methods({
             userId: this.userId,
         })
     },
-    'tasktypes.remove'(taskTypeId){
-        check(taskTypeId, String);
-        if(!this.userId){
-            throw new Meteor.Error('Not authorized.');
-        }
-        const task = TaskType.findOne({_id: taskTypeId, userId: this.userId});
-
-        if(!task){
-            throw new Meteor.Error(taskTypeId);
-        }
-        TaskType.remove(taskTypeId);
-    },
 });

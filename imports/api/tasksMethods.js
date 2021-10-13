@@ -12,7 +12,7 @@ Meteor.methods({
             text,
             createdAt: new Date,
             userId: this.userId,
-            TaskType,
+            taskTypeId: TaskType, //edited this
         })
     },
     'tasks.remove'(taskId){

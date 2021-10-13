@@ -57,6 +57,25 @@ Template.mainContainer.events({
       }
   });
 
+Template.task.helpers({
+  type(){
+    //puts the list of tasktypes in the taskTypes variable
+    const taskTypes = this.taskTypes;
+    //puts the taskTypeId in 
+    const tasktype = this.task.taskTypeId;
+    //variable for the tasktype used
+    var currentTaskType;
+
+    taskTypes.forEach(element => {
+      if(element._id == tasktype){
+        //if the element._id is equal to a tasktype, set currentTaskType to element.text;
+        currentTaskType = element.text;
+      }
+    });
+    return currentTaskType;
+  },
+})
+
 Template.mainContainer.helpers({
   allTaskTypes(){
     if (!isUserLogged()) {
@@ -76,15 +95,16 @@ Template.mainContainer.helpers({
         if (!isUserLogged()) {
           return [];
         }
-
-        if(taskTypeShown != "show-all"){
-          return TasksCollection.find(hideCompleted ? {TaskType: taskTypeShown, isChecked: pendingOnlyFilter.isChecked, userId: pendingOnlyFilter.userId} : userFilter && {TaskType: taskTypeShown}).fetch();
-         
-        }
-        return TasksCollection.find(hideCompleted ? pendingOnlyFilter : userFilter, {
-            sort: { createdAt: -1 },
+        if(taskTypeShown == "show-all" || taskTypeShown == undefined){
+          return TasksCollection.find(hideCompleted ? pendingOnlyFilter : userFilter, {
+            sort: [['taskTypeId', 'asc'], ['text', 'asc']]
           }).fetch();
-        
+        } 
+        //edited return from TaskType to taskTypeId
+        return TasksCollection.find(hideCompleted ? {taskTypeId: taskTypeShown, isChecked: pendingOnlyFilter.isChecked, userId: pendingOnlyFilter.userId} : userFilter && {taskTypeId: taskTypeShown},
+          {
+            sort: [['text', 'asc']]
+          }).fetch();
       },
 
   hideCompleted() {
@@ -148,7 +168,11 @@ Template.tasktypeform.events({
     const text = target.text.value;
     
     // Insert a task into the collection
-    Meteor.call('tasktypes.insert', text);
+    if(text != ""){
+      Meteor.call('tasktypes.insert', text);
+    } else {
+      alert("You need to type something!");
+    }
 
     // Clear form
     target.text.value = '';
