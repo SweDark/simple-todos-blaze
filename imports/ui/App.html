@@ -43,13 +43,6 @@
                     {{> task task=this taskTypes=allTaskTypes}}
                     {{/each}}
                 </ul>
-                    
-                <!-- <ul class="tasks">
-                    
-                    {{#each tasks}}
-                        {{> task}}
-                    {{/each}}
-                </ul> -->
                 {{> tasktypeform }}
                 <ul class="tasktypes">
                     {{#each allTaskTypes}}
@@ -71,10 +64,8 @@
             <option value="" disabled selected hidden>Select type...</option>
             {{#each taskType}}
                 <!-- change value to _id if we're connecting tasktype with its id instead of text -->
-                <!-- edited this -->
                  <option value="{{_id}}">{{text}}</option> 
             {{/each}}
-    
         </select>
         <button type="submit">Add Task</button>
     </form>

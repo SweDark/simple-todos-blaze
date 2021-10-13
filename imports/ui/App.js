@@ -151,7 +151,6 @@ Template.form.events({
       alert("You need to select a type to add a task!");
     }
 
-
     // Clear form
     target.text.value = '';
   }
@@ -166,7 +165,6 @@ Template.tasktypeform.events({
     // Get value from form element
     const target = event.target;
     const text = target.text.value;
-    
     // Insert a task into the collection
     if(text != ""){
       Meteor.call('tasktypes.insert', text);
