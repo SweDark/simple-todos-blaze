@@ -58,22 +58,17 @@ Template.mainContainer.events({
       }
   });
 
+
+
 Template.task.helpers({
-  type(){
-    //puts the list of tasktypes in the taskTypes variable
-    const taskTypes = this.taskTypes;
+  type(){    
+    
     //puts the taskTypeId in 
     const tasktype = this.task.taskTypeId;
-    //variable for the tasktype used
-    var currentTaskType;
+    //puts the list of tasktypes in the taskTypes variable
+    const taskTypes = this.taskTypes.find(o => o._id === tasktype);
 
-    taskTypes.forEach(element => {
-      if(element._id == tasktype){
-        //if the element._id is equal to a tasktype, set currentTaskType to element.text;
-        currentTaskType = element.text;
-      }
-    });
-    return currentTaskType;
+    return taskTypes.text;
   },
 })
 
