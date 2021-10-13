@@ -62,18 +62,24 @@ Template.mainContainer.events({
 
 Template.task.helpers({
   type(){    
-    
-    //puts the taskTypeId in 
     const tasktype = this.task.taskTypeId;
-    //puts the list of tasktypes in the taskTypes variable
-    const taskTypes = this.taskTypes.find(o => o._id === tasktype);
+    var taskTypesMap = new Map(this.taskTypes.map(i => [i._id, i.text]));
+    return taskTypesMap.get(tasktype)
 
-    return taskTypes.text;
   },
 })
 
 Template.mainContainer.helpers({
-  
+  allTaskTypesMap(){
+    if (!isUserLogged()) {
+      return [];
+    }
+    //returns all tasktypes created by the user
+    return Map(TaskType.find({}, {
+      sort: { createdAt: -1 },
+    }).fetch());
+  },
+
   allTaskTypes(){
     if (!isUserLogged()) {
       return [];
