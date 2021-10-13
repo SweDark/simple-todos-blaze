@@ -4,6 +4,7 @@ import {TasksCollection} from '../db/TasksCollection';
 Meteor.methods({
     'tasks.insert'(text, TaskType){
         check(text, String);
+        check(TaskType, String);
 
         if(!this.userId){
             throw new Meteor.Error('Not authorized.');
@@ -12,7 +13,7 @@ Meteor.methods({
             text,
             createdAt: new Date,
             userId: this.userId,
-            taskTypeId: TaskType, //edited this
+            taskTypeId: TaskType,
         })
     },
     'tasks.remove'(taskId){

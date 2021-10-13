@@ -63,7 +63,6 @@
         <select name="TaskType" >
             <option value="" disabled selected hidden>Select type...</option>
             {{#each taskType}}
-                <!-- change value to _id if we're connecting tasktype with its id instead of text -->
                  <option value="{{_id}}">{{text}}</option> 
             {{/each}}
         </select>

@@ -4,7 +4,6 @@ import {TaskType} from '../db/TaskType';
 Meteor.methods({
     'tasktypes.insert'(text){
         check(text, String);
-
         if(!this.userId){
             throw new Meteor.Error('Not authorized.');
         }

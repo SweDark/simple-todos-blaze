@@ -46,6 +46,7 @@ Template.mainContainer.events({
       const currentHideCompleted = instance.state.get(HIDE_COMPLETED_STRING);
       instance.state.set(HIDE_COMPLETED_STRING, !currentHideCompleted);
     },
+    //when the selected value changes, it sets the FILTER_TASKTYPE_STRING to the selectedTaskType
     "change #show-type-selection"(event, instance){
       console.log(event.target.value);
       const selectedTaskType = event.target.value;
@@ -77,11 +78,12 @@ Template.task.helpers({
 })
 
 Template.mainContainer.helpers({
+  
   allTaskTypes(){
     if (!isUserLogged()) {
       return [];
     }
-    
+    //returns all tasktypes created by the user
     return TaskType.find({}, {
       sort: { createdAt: -1 },
     }).fetch();
@@ -91,7 +93,7 @@ Template.mainContainer.helpers({
         const instance = Template.instance();
         const hideCompleted = instance.state.get(HIDE_COMPLETED_STRING);
         const taskTypeShown = instance.state.get(FILTER_TASKTYPE_STRING);
-        const { pendingOnlyFilter, userFilter,  } = getTasksFilter();
+        const { pendingOnlyFilter, userFilter } = getTasksFilter();
         if (!isUserLogged()) {
           return [];
         }
@@ -100,7 +102,6 @@ Template.mainContainer.helpers({
             sort: [['taskTypeId', 'asc'], ['text', 'asc']]
           }).fetch();
         } 
-        //edited return from TaskType to taskTypeId
         return TasksCollection.find(hideCompleted ? {taskTypeId: taskTypeShown, isChecked: pendingOnlyFilter.isChecked, userId: pendingOnlyFilter.userId} : userFilter && {taskTypeId: taskTypeShown},
           {
             sort: [['text', 'asc']]
